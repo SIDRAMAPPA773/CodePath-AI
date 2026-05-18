@@ -14,10 +14,16 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
+//     credentials: true, // ✅ allow cookies
+//   })
+// );
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
-    credentials: true, // ✅ allow cookies
+    origin: true,
+    credentials: true,
   })
 );
 
@@ -73,4 +79,8 @@ mongoose
   .then(() => console.log("MongoDB Atlas Connected"))
   .catch((err) => console.log("MongoDB Connection Error:", err));
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () =>
+  console.log(`Server running on port ${PORT}`)
+);
