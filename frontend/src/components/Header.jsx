@@ -33,13 +33,27 @@ function Header() {
 
   return (
     <header className={`saas-header ${scrolled ? 'scrolled' : ''}`}>
-      <div className="header-container">
-        <NavLink to="/" className="header-logo" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <Logo size={28} />
-          <span style={{ fontSize: "19px", fontWeight: "800", color: "#0f172a", letterSpacing: "-0.03em" }}>PrepTracker</span>
-        </NavLink>
+      <div className="header-container" style={{ width: "100%", display: "flex", alignItems: "center" }}>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
+          <NavLink to="/" className="header-logo" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <Logo size={28} />
+            <span style={{ fontSize: "19px", fontWeight: "800", color: "#0f172a", letterSpacing: "-0.03em" }}>PrepTracker</span>
+          </NavLink>
+        </div>
 
-        <nav className="header-nav">
+        {isAuth && (
+          <nav className="header-nav" style={{ flex: 4, display: "flex", justifyContent: "space-evenly", alignItems: "center", padding: "0 20px" }}>
+            <NavLink to="/" className={navLinkClass}>Dashboard</NavLink>
+            <NavLink to="/add" className={navLinkClass}>Add Problem</NavLink>
+            <NavLink to="/skills" className={navLinkClass}>Skills</NavLink>
+            <NavLink to="/company-sheet" className={navLinkClass}>Company Sheet</NavLink>
+            <NavLink to="/jd-analyzer" className={navLinkClass}>JD Analyzer</NavLink>
+            <NavLink to="/mock-interview" className={navLinkClass}>Mock Interview</NavLink>
+            <NavLink to="/resume-improver" className={navLinkClass}>Resume Improver</NavLink>
+          </nav>
+        )}
+
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
           {isAuth ? (
             <button onClick={handleLogout} className="btn-nav-login" style={{ color: "#ef4444" }}>
               Logout
@@ -54,7 +68,7 @@ function Header() {
               </NavLink>
             </div>
           )}
-        </nav>
+        </div>
       </div>
     </header>
   );
