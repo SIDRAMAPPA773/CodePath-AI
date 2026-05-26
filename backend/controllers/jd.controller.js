@@ -49,6 +49,13 @@ function formatSkillName(name) {
   const lower = name.toLowerCase().trim();
   if (displayMap[lower]) return displayMap[lower];
   
+  // Keep original casing for mixed-case acronyms/technologies (e.g., FastAPI, TailwindCSS, TypeScript, Next.js, CI/CD)
+  const hasUpper = /[A-Z]/.test(name);
+  const hasLower = /[a-z]/.test(name);
+  if (hasUpper && hasLower) {
+    return name.trim();
+  }
+  
   // Title Case for others
   return name.split(' ')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
@@ -79,6 +86,83 @@ async function extractSkillsFromDB(text) {
     }
   }
   return Array.from(foundSkills);
+}
+
+/**
+ * AI-ASSISTED SKILL EXTRACTION - LLM DRIVEN
+ */
+async function extractSkillsAI(text) {
+  try {
+    const prompt = `Analyze the following text and extract all technical skills, programming languages, frameworks, databases, tools, cloud services, and developer concepts mentioned.
+
+Text:
+"""
+${text}
+"""
+
+Rules:
+- Extract only genuine technical skills (e.g., Python, Docker, Kubernetes, React, FastAPI, AWS, CI/CD, Git, PostgreSQL, HTML, CSS).
+- Do NOT extract generic soft skills or non-technical words (e.g., "communication", "leadership", "problems", "management").
+- Return ONLY a valid JSON array of strings, for example: ["Python", "FastAPI", "Docker"]. Do not include any explanation or markdown formatting outside the JSON.`;
+
+    const aiRes = await generateAIResponse(prompt, { temperature: 0 });
+    if (aiRes.success) {
+      const clean = aiRes.text.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
+      const start = clean.indexOf("[");
+      const end = clean.lastIndexOf("]");
+      if (start !== -1 && end !== -1) {
+        const parsed = JSON.parse(clean.substring(start, end + 1));
+        if (Array.isArray(parsed)) {
+          return parsed.map(s => s.trim()).filter(s => s.length > 0);
+        }
+      }
+    }
+  } catch (e) {
+    console.error("AI Skill extraction failed:", e.message);
+  }
+  return [];
+}
+
+/**
+ * HYBRID SKILL EXTRACTION - COMBINES DB & AI
+ */
+async function extractSkillsHybrid(text) {
+  // 1. Get deterministic skills from DB
+  const dbSkills = await extractSkillsFromDB(text);
+  
+  // 2. Get additional skills using AI fallback
+  const aiSkills = await extractSkillsAI(text);
+  
+  // Fetch all DB skills to resolve aliases
+  const allDbSkills = await Skill.find({});
+  const dbSkillsByName = {};
+  const dbSkillsByAlias = {};
+  
+  allDbSkills.forEach(s => {
+    dbSkillsByName[s.name.toLowerCase()] = s.name;
+    s.aliases.forEach(a => {
+      dbSkillsByAlias[a.toLowerCase()] = s.name;
+    });
+  });
+
+  const merged = new Set(dbSkills);
+  
+  for (const skill of aiSkills) {
+    const lower = skill.toLowerCase().trim();
+    if (!lower) continue;
+    
+    // Resolve standard aliases or names if they exist in DB
+    if (dbSkillsByName[lower]) {
+      merged.add(dbSkillsByName[lower]);
+    } else if (dbSkillsByAlias[lower]) {
+      merged.add(dbSkillsByAlias[lower]);
+    } else {
+      // It's a new, dynamic skill. Capitalize and format it nicely
+      merged.add(formatSkillName(skill));
+    }
+  }
+  
+  return Array.from(merged);
 }
 
 /**
@@ -130,9 +214,9 @@ exports.analyzeJD = async (req, res, next) => {
     const pdfData = await pdfParse(resumeFile.buffer);
     const resumeText = pdfData.text;
 
-    // ── 2. Hybrid Deterministic Skill Extraction (NO AI for matching) ──
-    const jdSkills = await extractSkillsFromDB(jobDescription);
-    const resumeSkills = await extractSkillsFromDB(resumeText);
+    // ── 2. Hybrid Skill Extraction (Database + AI Fallback) ──
+    const jdSkills = await extractSkillsHybrid(jobDescription);
+    const resumeSkills = await extractSkillsHybrid(resumeText);
 
     // ── 3. Log Unknown Skills from JD for future expansion ──
     await logUnknownSkills(jobDescription, jdSkills);
