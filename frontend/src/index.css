@@ -673,12 +673,17 @@ select.saas-input {
     padding: 20px;
   }
   
-  /* Header Mobile Menu */
-  .header-nav {
+  /* Header Mobile Menu Fix */
+  .desktop-only {
     display: none !important;
   }
-  .header-nav.mobile-open {
-    display: flex !important;
+  
+  .mobile-dropdown {
+    display: none;
+  }
+  
+  .mobile-dropdown.open {
+    display: flex;
     flex-direction: column;
     position: absolute;
     top: 56px;
@@ -689,24 +694,25 @@ select.saas-input {
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
     padding: 20px;
-    align-items: stretch !important;
-    gap: 16px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     z-index: 999;
+    gap: 16px;
   }
-  .auth-group {
-    display: none !important;
-  }
-  .auth-group.mobile-open {
-    display: flex !important;
+  
+  .mobile-nav-links {
+    display: flex;
     flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-    gap: 12px;
+    align-items: stretch;
+    gap: 16px;
   }
-  .btn-nav-signup, .btn-nav-login {
-    width: 100%;
-    text-align: center;
+  
+  .mobile-auth-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 10px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
   }
 
   /* Dashboard Fixes */
@@ -735,6 +741,9 @@ select.saas-input {
 
 @media (min-width: 769px) {
   .mobile-menu-btn {
+    display: none !important;
+  }
+  .mobile-dropdown {
     display: none !important;
   }
 }
