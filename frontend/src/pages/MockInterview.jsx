@@ -58,7 +58,14 @@ function MockInterview() {
           </h3>
           <ul style={{ marginBottom: "20px", paddingLeft: "20px", color: "var(--text-muted)" }}>
             {interviewData.hrQuestions?.map((q, i) => (
-              <li key={i} style={{ marginBottom: "8px" }}>{q}</li>
+              <li key={i} style={{ marginBottom: "12px" }}>
+                <strong style={{ color: "var(--text-main)" }}>{typeof q === "string" ? q : q.question}</strong>
+                {typeof q === "object" && q.expectedAnswer && (
+                  <p style={{ marginTop: "4px", fontSize: "14px", color: "var(--text-muted)" }}>
+                    <em>Hint:</em> {q.expectedAnswer}
+                  </p>
+                )}
+              </li>
             ))}
           </ul>
 
@@ -67,7 +74,14 @@ function MockInterview() {
           </h3>
           <ul style={{ marginBottom: "20px", paddingLeft: "20px", color: "var(--text-muted)" }}>
             {interviewData.technicalQuestions?.map((q, i) => (
-              <li key={i} style={{ marginBottom: "8px" }}>{q}</li>
+              <li key={i} style={{ marginBottom: "12px" }}>
+                <strong style={{ color: "var(--text-main)" }}>{typeof q === "string" ? q : q.question}</strong>
+                {typeof q === "object" && q.expectedAnswer && (
+                  <p style={{ marginTop: "4px", fontSize: "14px", color: "var(--text-muted)" }}>
+                    <em>Hint:</em> {q.expectedAnswer}
+                  </p>
+                )}
+              </li>
             ))}
           </ul>
 

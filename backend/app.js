@@ -63,6 +63,17 @@ const analyticsRoutes = require("./routes/analytics.routes");
 
 const publicRoutes = require("./routes/public.routes");
 
+// Loader.io Verification
+app.get("/loaderio-abab29c1d6dfdc38423263e503287951.txt", (req, res) => {
+  res.send("loaderio-abab29c1d6dfdc38423263e503287951");
+});
+app.get("/loaderio-abab29c1d6dfdc38423263e503287951", (req, res) => {
+  res.send("loaderio-abab29c1d6dfdc38423263e503287951");
+});
+app.get("/loaderio-abab29c1d6dfdc38423263e503287951/", (req, res) => {
+  res.send("loaderio-abab29c1d6dfdc38423263e503287951");
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/public", publicRoutes);
 app.use("/api/dsa", dsaRoutes);
