@@ -21,8 +21,10 @@ exports.getDashboard = async (req, res, next) => {
     // difficulty count
     const difficultyCount = {};
     problems.forEach((p) => {
-      difficultyCount[p.difficulty] =
-        (difficultyCount[p.difficulty] || 0) + 1;
+      let diff = p.difficulty || "Unknown";
+      diff = diff.charAt(0).toUpperCase() + diff.slice(1).toLowerCase();
+      difficultyCount[diff] =
+        (difficultyCount[diff] || 0) + 1;
     });
 
     // topic count

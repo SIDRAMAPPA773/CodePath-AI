@@ -14,9 +14,9 @@ exports.getInsights = async (req, res, next) => {
 
     solvedProblems.forEach(p => {
       topicCounts[p.topic] = (topicCounts[p.topic] || 0) + 1;
-      if (difficultyCounts[p.difficulty] !== undefined) {
-        difficultyCounts[p.difficulty]++;
-      }
+      let diff = p.difficulty || "Unknown";
+      diff = diff.charAt(0).toUpperCase() + diff.slice(1).toLowerCase();
+      difficultyCounts[diff] = (difficultyCounts[diff] || 0) + 1;
     });
 
     const userSkills = [...new Set(solvedProblems.map(p => p.topic))];

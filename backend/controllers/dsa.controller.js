@@ -4,11 +4,13 @@ const AppError = require("../utils/AppError");
 
 exports.addProblem = async (req, res, next) => {
   try {
-    const { title, topic, difficulty, platform } = req.body;
+    let { title, topic, difficulty, platform } = req.body;
 
     if (!title || !topic || !difficulty || !platform) {
       return next(new AppError("Please provide title, topic, difficulty, and platform", 400));
     }
+    
+    difficulty = difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase();
 
     if (!req.user || !req.user.id) {
        return next(new AppError("Not authorized", 401));
@@ -98,9 +100,13 @@ exports.deleteProblem = async (req, res, next) => {
 
 exports.updateProblem = async (req, res, next) => {
   try {
+    const updateData = { ...req.body };
+    if (updateData.difficulty) {
+      updateData.difficulty = updateData.difficulty.charAt(0).toUpperCase() + updateData.difficulty.slice(1).toLowerCase();
+    }
     const updated = await Problem.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true }
     );
     if (!updated) {
