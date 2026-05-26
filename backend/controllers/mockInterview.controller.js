@@ -40,9 +40,20 @@ Format your response strictly as a JSON object matching this structure:
 
     let parsedData;
     try {
-      const jsonMatch = aiResult.text.match(/\{[\s\S]*\}/);
-      const cleanedText = jsonMatch ? jsonMatch[0] : aiResult.text;
-      parsedData = JSON.parse(cleanedText);
+      let cleanedText = aiResult.text;
+      if (cleanedText.includes("```json")) {
+        cleanedText = cleanedText.split("```json")[1].split("```")[0];
+      } else if (cleanedText.includes("```")) {
+        cleanedText = cleanedText.split("```")[1];
+      } else {
+        const start = cleanedText.indexOf("{");
+        const end = cleanedText.lastIndexOf("}");
+        if (start !== -1 && end !== -1) {
+          cleanedText = cleanedText.substring(start, end + 1);
+        }
+      }
+      
+      parsedData = JSON.parse(cleanedText.trim());
     } catch (e) {
       console.log("JSON Parse Error for Mock Interview:", aiResult.text);
       return next(new AppError("Invalid response format from AI.", 500));
