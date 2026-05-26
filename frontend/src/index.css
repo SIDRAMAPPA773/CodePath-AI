@@ -661,11 +661,92 @@ select.saas-input {
 
 @media (max-width: 768px) {
   .saas-header {
-    padding: 12px 20px;
+    padding: 12px 16px;
   }
   .saas-header.scrolled {
-    padding: 8px 20px;
+    padding: 8px 16px;
   }
+  .main-content {
+    padding: 24px 16px;
+  }
+  .saas-card {
+    padding: 20px;
+  }
+  
+  /* Header Mobile Menu */
+  .header-nav {
+    display: none !important;
+  }
+  .header-nav.mobile-open {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 20px;
+    align-items: stretch !important;
+    gap: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+  .auth-group {
+    display: none !important;
+  }
+  .auth-group.mobile-open {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+    gap: 12px;
+  }
+  .btn-nav-signup, .btn-nav-login {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Dashboard Fixes */
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  .mobile-col {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .mobile-gap {
+    gap: 12px !important;
+  }
+  .mobile-w-full {
+    width: 100% !important;
+  }
+  .problem-meta {
+    flex-wrap: wrap;
+  }
+  .problem-item > .flex.gap-2 {
+    margin-top: 12px;
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-menu-btn {
+    display: none !important;
+  }
+}
+
+.mobile-menu-btn {
+  display: block;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 4px;
 }
 
 @keyframes float {

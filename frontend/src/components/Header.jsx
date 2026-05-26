@@ -6,6 +6,7 @@ import Logo from "./Logo";
 function Header() {
   const [isAuth, setIsAuth] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,29 +42,36 @@ function Header() {
           </NavLink>
         </div>
 
+        <button 
+          className="mobile-menu-btn" 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? '✕' : '☰'}
+        </button>
+
         {isAuth && (
-          <nav className="header-nav" style={{ flex: 4, display: "flex", justifyContent: "space-evenly", alignItems: "center", padding: "0 20px" }}>
-            <NavLink to="/" className={navLinkClass}>Dashboard</NavLink>
-            <NavLink to="/add" className={navLinkClass}>Add Problem</NavLink>
-            <NavLink to="/skills" className={navLinkClass}>Skills</NavLink>
-            <NavLink to="/company-sheet" className={navLinkClass}>Company Sheet</NavLink>
-            <NavLink to="/jd-analyzer" className={navLinkClass}>JD Analyzer</NavLink>
-            <NavLink to="/mock-interview" className={navLinkClass}>Mock Interview</NavLink>
-            <NavLink to="/resume-improver" className={navLinkClass}>Resume Improver</NavLink>
+          <nav className={`header-nav ${mobileMenuOpen ? 'mobile-open' : ''}`} style={{ flex: 4, display: "flex", justifyContent: "space-evenly", alignItems: "center", padding: "0 20px" }}>
+            <NavLink to="/" className={navLinkClass} onClick={() => setMobileMenuOpen(false)}>Dashboard</NavLink>
+            <NavLink to="/add" className={navLinkClass} onClick={() => setMobileMenuOpen(false)}>Add Problem</NavLink>
+            <NavLink to="/skills" className={navLinkClass} onClick={() => setMobileMenuOpen(false)}>Skills</NavLink>
+            <NavLink to="/company-sheet" className={navLinkClass} onClick={() => setMobileMenuOpen(false)}>Company Sheet</NavLink>
+            <NavLink to="/jd-analyzer" className={navLinkClass} onClick={() => setMobileMenuOpen(false)}>JD Analyzer</NavLink>
+            <NavLink to="/mock-interview" className={navLinkClass} onClick={() => setMobileMenuOpen(false)}>Mock Interview</NavLink>
+            <NavLink to="/resume-improver" className={navLinkClass} onClick={() => setMobileMenuOpen(false)}>Resume Improver</NavLink>
           </nav>
         )}
 
         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
           {isAuth ? (
-            <button onClick={handleLogout} className="btn-nav-login" style={{ color: "#ef4444" }}>
+            <button onClick={handleLogout} className={`btn-nav-login ${mobileMenuOpen ? 'mobile-open' : ''}`} style={{ color: "#ef4444" }}>
               Logout
             </button>
           ) : (
-            <div className="auth-group">
-              <NavLink to="/login" className="btn-nav-login">
+            <div className={`auth-group ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+              <NavLink to="/login" className="btn-nav-login" onClick={() => setMobileMenuOpen(false)}>
                 Log in
               </NavLink>
-              <NavLink to="/signup" className="btn-nav-signup">
+              <NavLink to="/signup" className="btn-nav-signup" onClick={() => setMobileMenuOpen(false)}>
                 Sign Up
               </NavLink>
             </div>

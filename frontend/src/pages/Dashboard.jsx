@@ -137,11 +137,11 @@ function Dashboard() {
       </div>
 
       {streakData && (
-        <div className="saas-card mb-6 flex" style={{ padding: "20px 30px", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
+        <div className="saas-card mb-6 flex mobile-col mobile-gap" style={{ padding: "20px 30px", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
           <div>
             <h3 style={{ color: "var(--text-muted)", fontSize: "12px", textTransform: "uppercase", fontWeight: "600", letterSpacing: "1px" }}>Daily Goal</h3>
             {isEditingGoal ? (
-              <div className="flex gap-2 items-center" style={{ marginTop: "8px" }}>
+              <div className="flex gap-2 items-center mobile-col" style={{ marginTop: "8px" }}>
                 <input 
                   type="number" 
                   className="saas-input" 
@@ -150,8 +150,10 @@ function Dashboard() {
                   onChange={e => setGoalInput(e.target.value)} 
                   min="0"
                 />
-                <button onClick={saveGoal} className="btn-primary" style={{ padding: "6px 12px" }}>Save</button>
-                <button onClick={() => setIsEditingGoal(false)} className="btn-ghost" style={{ padding: "6px" }}>Cancel</button>
+                <div className="flex gap-2 w-full mobile-w-full justify-center">
+                  <button onClick={saveGoal} className="btn-primary" style={{ padding: "6px 12px", flex: 1 }}>Save</button>
+                  <button onClick={() => setIsEditingGoal(false)} className="btn-ghost" style={{ padding: "6px", flex: 1 }}>Cancel</button>
+                </div>
               </div>
             ) : (
               <div className="flex gap-2 items-center" style={{ marginTop: "4px" }}>
@@ -190,7 +192,7 @@ function Dashboard() {
       )}
 
       <div className="dashboard-grid">
-        <div className="saas-card hoverable flex items-center justify-between" style={{ padding: "30px" }}>
+        <div className="saas-card hoverable flex items-center justify-between mobile-col" style={{ padding: "30px" }}>
           <div>
             <h3 style={{ color: "var(--text-muted)", fontSize: "14px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total Problems</h3>
             <div style={{ fontSize: "40px", fontWeight: "700", color: "var(--text-main)", marginTop: "8px" }}>{data.total}</div>
@@ -200,7 +202,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="saas-card hoverable flex items-center justify-between" style={{ padding: "30px" }}>
+        <div className="saas-card hoverable flex items-center justify-between mobile-col" style={{ padding: "30px" }}>
           <div>
             <h3 style={{ color: "var(--text-muted)", fontSize: "14px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.5px" }}>Best & Worst</h3>
             <div style={{ marginTop: "12px", display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -301,16 +303,18 @@ function Dashboard() {
             {data.recent.map((p) => (
               <div key={p._id} className="problem-item">
                 {editingId === p._id ? (
-                  <div className="flex gap-2 w-full" style={{ flexWrap: "wrap", alignItems: "center" }}>
-                    <input name="title" className="saas-input" value={editForm.title} onChange={e => setEditForm({ ...editForm, title: e.target.value })} style={{ flex: 2, padding: "8px" }} />
-                    <input name="topic" className="saas-input" value={editForm.topic} onChange={e => setEditForm({ ...editForm, topic: e.target.value })} style={{ flex: 1, padding: "8px" }} />
-                    <select name="difficulty" className="saas-input" value={editForm.difficulty} onChange={e => setEditForm({ ...editForm, difficulty: e.target.value })} style={{ flex: 1, padding: "8px" }}>
+                  <div className="flex gap-2 w-full mobile-col" style={{ flexWrap: "wrap", alignItems: "center" }}>
+                    <input name="title" className="saas-input mobile-w-full" value={editForm.title} onChange={e => setEditForm({ ...editForm, title: e.target.value })} style={{ flex: 2, padding: "8px" }} />
+                    <input name="topic" className="saas-input mobile-w-full" value={editForm.topic} onChange={e => setEditForm({ ...editForm, topic: e.target.value })} style={{ flex: 1, padding: "8px" }} />
+                    <select name="difficulty" className="saas-input mobile-w-full" value={editForm.difficulty} onChange={e => setEditForm({ ...editForm, difficulty: e.target.value })} style={{ flex: 1, padding: "8px" }}>
                       <option value="Easy">Easy</option><option value="Medium">Medium</option><option value="Hard">Hard</option>
                     </select>
-                    <input name="platform" className="saas-input" value={editForm.platform} onChange={e => setEditForm({ ...editForm, platform: e.target.value })} style={{ flex: 1, padding: "8px" }} />
+                    <input name="platform" className="saas-input mobile-w-full" value={editForm.platform} onChange={e => setEditForm({ ...editForm, platform: e.target.value })} style={{ flex: 1, padding: "8px" }} />
                     
-                    <button onClick={handleUpdate} className="btn-primary" style={{ padding: "8px 16px" }}>Save</button>
-                    <button onClick={() => setEditingId(null)} className="btn-ghost" style={{ padding: "8px 16px" }}>Cancel</button>
+                    <div className="flex gap-2 mobile-w-full">
+                      <button onClick={handleUpdate} className="btn-primary mobile-w-full" style={{ padding: "8px 16px", flex: 1 }}>Save</button>
+                      <button onClick={() => setEditingId(null)} className="btn-ghost mobile-w-full" style={{ padding: "8px 16px", flex: 1 }}>Cancel</button>
+                    </div>
                   </div>
                 ) : (
                   <>
