@@ -48,6 +48,12 @@ app.use(
     },
   })
 );
+app.use((req, res, next) => {
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} ${req.originalUrl} | IP: ${req.ip}`
+  );
+  next();
+});
 
 const authRoutes = require("./routes/auth.routes");
 const dsaRoutes = require("./routes/dsa.routes");
